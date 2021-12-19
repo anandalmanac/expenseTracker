@@ -12,7 +12,8 @@ import Popup from '../../Popup'
 
 
 function Budget() {
-    const[display,setDisplay]=useState(false)
+    const[filterDisplay,setFilterDisplay]=useState(false)
+    const [filter,setFilter]=useState(null)
     const [startDate,setStartDate]=useState(new Date())
     const [cata,setCata]=useState()
     const [amount,setAmount]=useState()
@@ -117,6 +118,13 @@ function Budget() {
       </PopupContainer>)
     }
 
+    //filter display 
+    useEffect(()=>{
+        filterDisplay?document.querySelector('.filter-popup').style.display='none':document.querySelector('.filter-popup').style.display='unset'
+
+    },[filterDisplay])
+    
+
 
     return (
         <Container>
@@ -152,15 +160,21 @@ function Budget() {
             </Card>
             <button className='create-btn' onClick={handleForm} >CREATE</button>
             <div className="items">
-                <div className="filter-container">
+                <div className="filter-container" onClick={()=>setFilterDisplay(!filterDisplay)}>
                     <SettingsAccessibilityOutlined />
                 </div>
-                <FilterPopup>
-                    <p>This Month</p>
-                    <p>This Month Income</p>
-                    <p>This Month Expense</p>
-                    <p>This Week Income</p>
-                    <p>This Week Expense</p>
+                <FilterPopup className='filter-popup'>
+                    <select name="" id="">
+                        <option value="">All</option>
+                        <option value="">This Month</option>
+                        <option value="">This week</option>
+                    </select>
+                    <select name="" id="">
+                    <option name="" id="">Expense</option>
+                    <option name="" id="">Income</option>
+
+                    </select>
+                    
 
                 </FilterPopup>
                 {formdata.map((item,index)=>(
@@ -281,7 +295,6 @@ box-sizing: border-box;
 border-radius: 4px;
 
 
-
 .left{
     flex: .5;
     .react-datepicker__triangle::after{
@@ -339,9 +352,17 @@ border-radius: 4px;
 `
 const FilterPopup=styled.div`
 position:absolute;
-right:0;
+right:10px;
+top: -10px;
 background-color:white;
-
+padding: 10px;
+box-shadow:0 0 10px rgba(0,0,0,.3);
+border-radius: 4px;
+select{
+    outline: none;
+    border: none;
+    margin: 10px;
+}
 
 `
 

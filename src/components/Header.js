@@ -32,9 +32,11 @@ position: fixed;
 box-shadow:0px 1px 16px rgba(0,0,0,.3);
 color: #048CF6;
 z-index:10;
+
 h1{
     margin: 0;
     cursor: pointer;
+    
 }
 
 .right-header{
