@@ -174,6 +174,11 @@ function Budget() {
                     <option name="" id="">Income</option>
 
                     </select>
+
+                    <div className='filter-btn'>
+                        <button>Cancel</button>
+                        <button className='ok-btn'>Ok</button>
+                    </div>
                     
 
                 </FilterPopup>
@@ -362,6 +367,21 @@ select{
     outline: none;
     border: none;
     margin: 10px;
+}
+.filter-btn{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    .ok-btn{
+        margin-left: 6px;
+    }
+}
+.filter-btn button{
+    background-color: transparent;
+    border: 1px solid green;
+    padding: 5px 10px;
+    border-radius: 4px;
+    width: 80px;
 }
 
 `
