@@ -13,7 +13,9 @@ const budgetFormReducer=(state=[],actions)=>{
             return [...state]
 
         
-
+        case 'FILTER_BUDGETFORMDATA':
+            console.log('filter reducer')
+            return [...state]
             
         default:
             return state

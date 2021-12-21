@@ -5,7 +5,7 @@ import { AttachMoney, Category, DeleteOutlined, Filter, MicOutlined, SettingsAcc
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useSelector } from 'react-redux';
-import { delete_budgetFormdata, set_budgetFormData } from '../../../store/actions';
+import { delete_budgetFormdata, filter_budgetFormdata, set_budgetFormData } from '../../../store/actions';
 import { useDispatch } from 'react-redux';
 import Popup from '../../Popup'
 
@@ -17,6 +17,7 @@ function Budget() {
         date:'All',
         type:'All'
     })
+    const [filteredData,setFilteredData]=useState(null)
     const [startDate,setStartDate]=useState(new Date())
     const [cata,setCata]=useState()
     const [amount,setAmount]=useState()
@@ -127,9 +128,15 @@ function Budget() {
 
     },[filterDisplay])
     
-    useEffect(()=>{
-      console.log(filter )  
-    },[filter])
+    //filter
+    const handle_filter=()=>{
+        let _filteredData=[]
+       formdata.map((item)=>(
+           console.log(item,'item')
+           //filter function here
+       ))
+
+    }
 
     return (
         <Container>
@@ -183,7 +190,7 @@ function Budget() {
 
                     <div className='filter-btn'>
                         <button onClick={()=>setFilterDisplay(false)}>Cancel</button>
-                        <button className='ok-btn'>Ok</button>
+                        <button className='ok-btn' onClick={handle_filter}>Ok</button>
                     </div>
                     
 

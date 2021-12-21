@@ -11,4 +11,10 @@ export const delete_budgetFormdata=(index)=>{
         payload:index
     }
 }
+export const filter_budgetFormdata=(filter)=>{
+    return{
+        type:'FILTER_BUDGETFORMDATA',
+        payload:filter
+    }
+}
 
