@@ -13,7 +13,10 @@ import Popup from '../../Popup'
 
 function Budget() {
     const[filterDisplay,setFilterDisplay]=useState(false)
-    const [filter,setFilter]=useState(null)
+    const [filter,setFilter]=useState({
+        date:'All',
+        type:'All'
+    })
     const [startDate,setStartDate]=useState(new Date())
     const [cata,setCata]=useState()
     const [amount,setAmount]=useState()
@@ -120,11 +123,13 @@ function Budget() {
 
     //filter display 
     useEffect(()=>{
-        filterDisplay?document.querySelector('.filter-popup').style.display='none':document.querySelector('.filter-popup').style.display='unset'
+        !filterDisplay?document.querySelector('.filter-popup').style.display='none':document.querySelector('.filter-popup').style.display='unset'
 
     },[filterDisplay])
     
-
+    useEffect(()=>{
+      console.log(filter )  
+    },[filter])
 
     return (
         <Container>
@@ -164,19 +169,20 @@ function Budget() {
                     <SettingsAccessibilityOutlined />
                 </div>
                 <FilterPopup className='filter-popup'>
-                    <select name="" id="">
-                        <option value="">All</option>
-                        <option value="">This Month</option>
-                        <option value="">This week</option>
+                    <select name="" id="" onChange={(e)=>setFilter({...filter,date:e.target.value})}>
+                        <option value="All">All</option>
+                        <option value="This Month">This Month</option>
+                        <option value="This Week">This week</option>
                     </select>
-                    <select name="" id="">
-                    <option name="" id="">Expense</option>
-                    <option name="" id="">Income</option>
+                    <select name="" id="" onChange={(e)=>setFilter({...filter,type:e.target.value})}>
+                    <option value="All">All</option>
+                    <option name="" id="" value="Expense">Expense</option>
+                    <option name="" id="" value="Income">Income</option>
 
                     </select>
 
                     <div className='filter-btn'>
-                        <button>Cancel</button>
+                        <button onClick={()=>setFilterDisplay(false)}>Cancel</button>
                         <button className='ok-btn'>Ok</button>
                     </div>
                     
@@ -264,6 +270,7 @@ align-items: center;
         position:absolute;
         right:0;
         top:-35px;
+        cursor: pointer;
     }
 
 
@@ -382,6 +389,7 @@ select{
     padding: 5px 10px;
     border-radius: 4px;
     width: 80px;
+    cursor: pointer;
 }
 
 `
