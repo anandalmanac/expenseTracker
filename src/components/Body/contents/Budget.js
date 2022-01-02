@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useState } from 'react';
-import { AttachMoney, Category, DeleteOutlined, Filter, MicOutlined, SettingsAccessibilityOutlined } from '@mui/icons-material';
+import { AttachMoney, Category, DeleteOutlined, Filter, FilterAlt, MicOutlined, Settings, SettingsAccessibilityOutlined } from '@mui/icons-material';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useSelector } from 'react-redux';
@@ -135,6 +135,7 @@ function Budget() {
            console.log(item,'item')
            //filter function here
        ))
+       setFilterDisplay(false)
 
     }
 
@@ -173,7 +174,7 @@ function Budget() {
             <button className='create-btn' onClick={handleForm} >CREATE</button>
             <div className="items">
                 <div className="filter-container" onClick={()=>setFilterDisplay(!filterDisplay)}>
-                    <SettingsAccessibilityOutlined />
+                    <Settings />
                 </div>
                 <FilterPopup className='filter-popup'>
                     <select name="" id="" onChange={(e)=>setFilter({...filter,date:e.target.value})}>
