@@ -4,10 +4,11 @@ import Header from './components/Header';
 import Body from './components/Body';
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
   Link
 } from "react-router-dom";
+import Profile from './components/Body/contents/profile/Profile';
 
 
 function App() {

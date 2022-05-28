@@ -6,9 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import { combineReducers,createStore } from 'redux';
 import { Provider } from 'react-redux';
 import budgetFormReducer from './store/reducers/Budget';
+import todoFormReducer from './store/reducers/Todo';
 
 const combinedReducers=combineReducers({
   budgetFormData:budgetFormReducer,
+  todoData:todoFormReducer,
 })
 
 

@@ -9,8 +9,8 @@ function Dashboard() {
     return (
         <Container>
             
-            <Link  to="/"><Person /> My Profile</Link>
-            <Link to="/"><NoteAdd /> TODO</Link>
+            <Link  to="/profile"><Person /> My Profile</Link>
+            <Link to="/todo"><NoteAdd /> TODO</Link>
             <Link to="/expense-tracker"><AssessmentOutlined/>Expense Tracker</Link>
             <Link to="/budget"><AttachMoney/>Budget</Link>
             <a href=""><NotificationsActiveOutlined /> Notifications</a>

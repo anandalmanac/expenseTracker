@@ -7,8 +7,10 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import Todo from './contents/Todo';
+import Todo from './contents/todo/Todo.jsx';
 import Budget from './contents/Budget';
+import Profile from './contents/profile/Profile'
+import Login from './contents/Login/Login';
 
 
 
@@ -16,9 +18,11 @@ function Contents() {
     return (
         <Container>
             <Routes>
+                <Route path='/' element={<Login />} />
+                <Route path='/profile' element={<Profile />} />
                 <Route path='/budget' element={<Budget />} />
                 <Route path='/expense-tracker' element={<ExpenseTracker />} />
-                <Route path='/' element={<Todo />} />
+                <Route path='/todo' element={<Todo />} />
 
             
             </Routes>
