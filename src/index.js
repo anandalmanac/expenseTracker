@@ -7,10 +7,12 @@ import { combineReducers,createStore } from 'redux';
 import { Provider } from 'react-redux';
 import budgetFormReducer from './store/reducers/Budget';
 import todoFormReducer from './store/reducers/Todo';
+import { UserReducer } from './store/reducers/User';
 
 const combinedReducers=combineReducers({
   budgetFormData:budgetFormReducer,
   todoData:todoFormReducer,
+  user:UserReducer
 })
 
 

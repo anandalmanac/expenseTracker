@@ -1,23 +1,33 @@
 import { ArrowRight, ArrowRightAltOutlined } from '@mui/icons-material'
 import { TextField } from '@mui/material'
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
-import React, { useState } from 'react'
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { regex } from './regex'
 import { app } from '../../../../store/firebase/firebase'
+import { useDispatch, useSelector } from 'react-redux'
+import {remove_user, set_user} from '../../../../store/actions/user'
 
 function Login() {
+    let user=useSelector(state=>state.user)
+    const dispatch=useDispatch()
+    //
+    useEffect(()=>{
+        console.log('user redux',user)
+    },[user])
     const[account,setAccount]=useState(false)
-    const [signupdata,setSignupdata]=useState({
+    
+    let _signupdata={
         username:'',
         email:'',
         password:'',
         confirmPassword:'',
            
         
-    })
+    }
+    const [signupdata,setSignupdata]=useState(_signupdata)
     const[signindata,setSignindata]=useState({
-        username:'',
+        email:'',
         password:'',
     })
     const [errors,setErrors]=useState({
@@ -26,6 +36,24 @@ function Login() {
         passwordError:'',
         confirmPasswordError:''
     })
+
+    useEffect(()=>{
+        const auth = getAuth();
+        auth.onAuthStateChanged((user)=>{
+            if(user){
+                
+                dispatch(set_user(user))
+                
+
+
+            }else{
+                dispatch(remove_user())
+            }
+        })
+    },[])
+
+
+
     const validate=()=>{
         let RegEx=regex
         let emailError=''
@@ -64,19 +92,34 @@ function Login() {
             if(signupdata.password===signupdata.confirmPassword){
                 console.log('login successful',signupdata)
                 confirmPasswordError=''
-                const auth = getAuth();
+                const auth=getAuth()
                 createUserWithEmailAndPassword(auth, signupdata.email, signupdata.password)
                     .then((userCredential) => {
                         // Signed in 
                         const user = userCredential.user;
                         console.log('user:',user)
+                        setSignupdata(_signupdata)
+                        setAccount(true)
                         // ...
                     })
-                    .catch((error) => {
-                        const errorCode = error.code;
-                        const errorMessage = error.message;
-                        // ..
-                    });
+                    .catch((err) => {
+                        switch(err.code){
+                    case "auth/email-already-in-use":
+                        emailError=err.message;
+                        setErrors({...errors,emailError})
+                        
+                        break;
+
+                    case "auth/invalid-email": 
+                        emailError=err.message;
+                        setErrors({...errors,emailError})
+                        break;
+                    case "auth/weak-password":
+                        passwordError=err.message;
+                        setErrors({...errors,passwordError})
+                        break;
+                }
+                            });
             }else{
                 confirmPasswordError='password doesnt match'
             }
@@ -88,7 +131,7 @@ function Login() {
     const validate_email=()=>{
         
     }
-    const handle_submit=(e)=>{
+    const handle_signup=(e)=>{
         e.preventDefault()
         let isValid=validate()
         let confirmPasswordError=''
@@ -98,15 +141,42 @@ function Login() {
         
             
         }
+    const handle_login=(e)=>{
+    e.preventDefault()
+    const auth = getAuth();
+    let emailError=''
+    let passwordError=''
+ signInWithEmailAndPassword(auth,signindata.email,signindata.password)
+    .then(setErrors({...errors,emailError,passwordError}))
+    .catch(err=>{
+        switch(err.code){
+            case "auth/invalid-email":
+            case "auth/user-disabled":
+            case "auth/user-not-found": 
+                emailError=err.message
+                setErrors({...errors,emailError});
+                console.log(err.message)
+                break;
+            case "auth/wrong-password":
+                passwordError=err.message
+                setErrors({...errors,passwordError});
+                console.log(err.message);
+                break;
+        }
+    })
+
+}
   return (
     <Container>
         <div className="wrapper">
             <h1>{account?'Log in':'Sign Up'}</h1>
             {account?
             <>
-            <TextField  label="Username" variant="standard" value={signindata.username} onChange={(e)=>setSignindata({...signindata,username:e.target.value})} />
-            <TextField  label="Password" variant="standard" type='password' />
-            <button>Sign in <span><ArrowRightAltOutlined /></span> </button>
+            <TextField  label="Username" variant="standard" value={signindata.email} onChange={(e)=>setSignindata({...signindata,email:e.target.value})} />
+            <div className='form-errors'>{errors.emailError}</div>
+            <TextField  label="Password" variant="standard" type='password' value={signindata.password} onChange={(e)=>setSignindata({...signindata,password:e.target.value})} />
+            <div className='form-errors'>{errors.passwordError}</div>
+            <button onClick={handle_login} >Sign in <span><ArrowRightAltOutlined /></span> </button>
             </>
             
             :<>
@@ -118,7 +188,7 @@ function Login() {
             <div className='form-errors'>{errors.passwordError}</div>
             <TextField  label="Confirm Password" variant="standard" type='password' value={signupdata.confirmPassword} onChange={(e)=>setSignupdata({...signupdata,confirmPassword:e.target.value})} />
             <div className='form-errors'>{errors.confirmPasswordError}</div>
-            <button onClick={handle_submit} >Sign Up</button>
+            <button onClick={handle_signup} >Sign Up</button>
             
             
             </>}

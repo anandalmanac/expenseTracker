@@ -1,15 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 
 function Header() {
+    const user=useSelector(state=>state.user)
+    useEffect(() => {
+        console.log('header',user.user)
+    }, [user]);
     return (
         <Container>
            <div className="left-header">
                <h1>TrackMe</h1>
            </div>
            <div className="right-header">
-               <a href="">LogIn</a>
+               {!user.user?<>
+               <Link to="/login">LogIn</Link>
                <a href="" className='signup'>SignUp</a>
+               </>:
+               <a href="">LogOut</a>
+               }
            </div>
         </Container>
     )
