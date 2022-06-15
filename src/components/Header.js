@@ -1,13 +1,29 @@
+import { getAuth, signOut } from 'firebase/auth';
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
+import { remove_user } from '../store/actions/user';
 
 function Header() {
+    const dispatch=useDispatch()
     const user=useSelector(state=>state.user)
     useEffect(() => {
         console.log('header',user.user)
     }, [user]);
+
+    const handleSignout=()=>{
+        const auth=getAuth()
+        auth.signOut().then(()=>{
+            console.log('signed out')
+            dispatch(remove_user())
+        }
+
+        ).catch((error)=>{
+            console.log(error)
+
+        })
+    }
     return (
         <Container>
            <div className="left-header">
@@ -18,7 +34,7 @@ function Header() {
                <Link to="/login">LogIn</Link>
                <a href="" className='signup'>SignUp</a>
                </>:
-               <a href="">LogOut</a>
+               <a onClick={handleSignout} >LogOut</a>
                }
            </div>
         </Container>

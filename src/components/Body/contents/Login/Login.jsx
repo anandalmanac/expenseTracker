@@ -7,10 +7,12 @@ import { regex } from './regex'
 import { app } from '../../../../store/firebase/firebase'
 import { useDispatch, useSelector } from 'react-redux'
 import {remove_user, set_user} from '../../../../store/actions/user'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 function Login() {
     let user=useSelector(state=>state.user)
     const dispatch=useDispatch()
+    const navigate=useNavigate()
     //
     useEffect(()=>{
         console.log('user redux',user)
@@ -99,7 +101,7 @@ function Login() {
                         const user = userCredential.user;
                         console.log('user:',user)
                         setSignupdata(_signupdata)
-                        setAccount(true)
+                        navigate('/')
                         // ...
                     })
                     .catch((err) => {
@@ -147,7 +149,13 @@ function Login() {
     let emailError=''
     let passwordError=''
  signInWithEmailAndPassword(auth,signindata.email,signindata.password)
-    .then(setErrors({...errors,emailError,passwordError}))
+    .then(()=>{
+        
+        setErrors({...errors,emailError,passwordError})
+        navigate("/")
+    
+    })
+        
     .catch(err=>{
         switch(err.code){
             case "auth/invalid-email":

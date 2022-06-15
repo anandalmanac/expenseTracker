@@ -4,7 +4,7 @@ import styled from 'styled-components'
 function Profile() {
   return (
     <Container>
-      profile
+      
     </Container>
   )
 }
