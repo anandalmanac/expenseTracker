@@ -114,7 +114,7 @@ function TodoForm({updateIndex}) {
                         
                     </Select>
                     </FormControl> 
-                    <ReactDatePicker placeholderText='dd/mm/yyyy' className='form-input' selected={data?.date} onChange={(date)=>setData({...data,date:date})} />
+                    <ReactDatePicker placeholderText='dd/mm/yyyy' className='form-input' selected={new Date(data?.date)} onChange={(date)=>setData({...data,date:date})} />
                    <div className="todo-popup-btn form-input">
                         <button onClick={clear_form}>Cancel</button>
                         <button className='add-btn'  onClick={(e)=>handle_addtodo(e)}>Add</button>
