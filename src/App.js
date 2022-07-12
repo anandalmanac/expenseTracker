@@ -14,7 +14,7 @@ import { getAuth } from 'firebase/auth';
 import { remove_user, set_user } from './store/actions/user';
 import { useDispatch } from 'react-redux';
 import { db } from './store/firebase/firebase';
-import {doc,onSnapshot,collection} from 'firebase/firestore'
+import {doc,onSnapshot,collection, getDocs} from 'firebase/firestore'
 
 
 function App() {
@@ -35,14 +35,15 @@ function App() {
         })
     },[])
     useEffect(() => {
-   const unsub = collection(db,'user')
-   onSnapshot(unsub,snapshot=>{
-    setUserData(snapshot.docs.map(doc=>({
-        id:doc.id,
-        post:doc.data()})))
+   const colref = collection(db,'users')
+   getDocs(colref)
+   .then((snapshot)=>{
+    snapshot.docs.forEach((doc)=>{
+      console.log(doc.data())
+    })
    })
 
-   console.log('abcd',userData)
+ 
 
   }, []);
   return (
